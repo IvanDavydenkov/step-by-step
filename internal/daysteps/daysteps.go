@@ -27,14 +27,14 @@ func parsePackage(data string) (int, time.Duration, error) {
 		return 0, 0, errors.New("ошибка парсинга шагов")
 	}
 	if err != nil {
-		return 0, 0, err
+		return 0, 0, fmt.Errorf("некорректный формат шагов: %w", err)
 	}
 	duration, err := time.ParseDuration(arr[1])
 	if duration <= 0 {
-		return 0, 0, errors.New("ошибка парсинга времени")
+		return 0, 0, errors.New("время не может быть отрицательнысс")
 	}
 	if err != nil {
-		return 0, 0, err
+		return 0, 0, fmt.Errorf("некорректный формат времени: %w", err)
 	}
 	return steps, duration, nil
 }

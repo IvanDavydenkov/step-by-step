@@ -35,7 +35,7 @@ func parseTraining(data string) (int, string, time.Duration, error) {
 	duration, err := time.ParseDuration(parts[2])
 
 	if err != nil {
-		return 0, "", 0, err
+		return 0, "", 0, fmt.Errorf("некорректный формат времени: %w", err)
 	}
 	if duration <= 0 {
 		return 0, "", 0, errors.New("длительность не должна быть равно нулю или меньше его")
@@ -60,7 +60,7 @@ func TrainingInfo(data string, weight, height float64) (string, error) {
 
 	if err != nil {
 		log.Println(err)
-		return "", err
+		return "", fmt.Errorf("ошибка входных данных: %w", err)
 	}
 
 	var energy float64
@@ -68,13 +68,13 @@ func TrainingInfo(data string, weight, height float64) (string, error) {
 	case "Ходьба":
 		value, err := WalkingSpentCalories(steps, weight, height, duration)
 		if err != nil {
-			return "", err
+			return "", fmt.Errorf("ошибка вычисления калорий ходьбы: %w", err)
 		}
 		energy = value
 	case "Бег":
 		value, err := RunningSpentCalories(steps, weight, height, duration)
 		if err != nil {
-			return "", err
+			return "", fmt.Errorf("ошибка вычисления калорий бега: %w", err)
 		}
 		energy = value
 	default:
